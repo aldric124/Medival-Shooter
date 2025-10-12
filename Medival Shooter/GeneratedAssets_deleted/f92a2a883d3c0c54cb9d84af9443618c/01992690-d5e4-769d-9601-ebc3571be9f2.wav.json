@@ -1,0 +1,13 @@
+{
+    "asset": "f92a2a883d3c0c54cb9d84af9443618c",
+    "fileName": "01992690-d5e4-769d-9601-ebc3571be9f2.wav",
+    "prompt": "ambient forest sounds with medieval elements for a training practice environment",
+    "negativePrompt": "",
+    "model": "0ee39b33-2893-4e0f-8c46-0e0bdd4eda85",
+    "modelName": "Text to Sound",
+    "customSeed": -1,
+    "w3CTraceId": "a3b7c75b9314dae6996fe256c890c737",
+    "duration": 10.0,
+    "autoTrim": false,
+    "hasReference": false
+}
