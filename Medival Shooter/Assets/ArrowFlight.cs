@@ -1,34 +1,38 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-public class ArrowFlight : MonoBehaviour
+public class Arrow : MonoBehaviour
 {
+    public float lifeTime = 10f;
     Rigidbody rb;
+    bool hasHit = false;
 
-    void Awake()
+    void Start()
     {
         rb = GetComponent<Rigidbody>();
+        transform.parent = null;     // detach from bow/camera
+        Destroy(gameObject, lifeTime); // safe lifetime
+        Debug.Log("Arrow.Start at " + transform.position);
     }
 
     void FixedUpdate()
     {
-        Vector3 v = rb.linearVelocity;
-        if (v.sqrMagnitude > 0.01f)
-        {
-            transform.rotation = Quaternion.LookRotation(v);
-        }
+        if (!hasHit && rb != null && rb.linearVelocity.sqrMagnitude > 0.01f)
+            transform.rotation = Quaternion.LookRotation(rb.linearVelocity);
     }
 
-    // Optional: make the arrow stick on collision
     void OnCollisionEnter(Collision col)
     {
-        // Basic "stick" behavior
-        rb.isKinematic = true;
-        // parent the arrow to what it hit so it moves with it
-        transform.SetParent(col.collider.transform, true);
+        if (hasHit) return;
+        // ignore bow collisions if not already
+        if (col.gameObject.CompareTag("Bow")) return;
 
-        // optionally disable collider or remove scripts that move it further
-        // GetComponent<Collider>().enabled = false;
-        Destroy(this); // remove this script so it doesn't try to change rotation anymore
+        hasHit = true;
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+            rb.linearVelocity = Vector3.zero;
+        }
+        transform.SetParent(col.transform, true);
+        Debug.Log("Arrow hit " + col.gameObject.name);
     }
 }
